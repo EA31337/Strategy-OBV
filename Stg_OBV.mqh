@@ -16,6 +16,7 @@
 // User input params.
 INPUT string __OBV_Parameters__ = "-- OBV strategy params --";  // >>> OBV <<<
 INPUT ENUM_APPLIED_PRICE OBV_Applied_Price = PRICE_CLOSE;       // Applied Price
+INPUT int OBV_Shift = 0;                                        // Shift
 INPUT int OBV_SignalOpenMethod = 0;                             // Signal open method (0-
 INPUT double OBV_SignalOpenLevel = 0.00000000;                  // Signal open level
 INPUT int OBV_SignalCloseMethod = 0;                            // Signal close method (0-
@@ -26,7 +27,6 @@ INPUT double OBV_MaxSpread = 6.0;                               // Max spread to
 
 // Struct to define strategy parameters to override.
 struct Stg_OBV_Params : Stg_Params {
-  unsigned int OBV_Period;
   ENUM_APPLIED_PRICE OBV_Applied_Price;
   int OBV_Shift;
   int OBV_SignalOpenMethod;
@@ -39,8 +39,7 @@ struct Stg_OBV_Params : Stg_Params {
 
   // Constructor: Set default param values.
   Stg_OBV_Params()
-      : OBV_Period(::OBV_Period),
-        OBV_Applied_Price(::OBV_Applied_Price),
+      : OBV_Applied_Price(::OBV_Applied_Price),
         OBV_Shift(::OBV_Shift),
         OBV_SignalOpenMethod(::OBV_SignalOpenMethod),
         OBV_SignalOpenLevel(::OBV_SignalOpenLevel),
@@ -94,9 +93,9 @@ class Stg_OBV : public Strategy {
     }
     // Initialize strategy parameters.
     ChartParams cparams(_tf);
-    OBV_Params adx_params(_params.OBV_Period, _params.OBV_Applied_Price);
-    IndicatorParams adx_iparams(10, INDI_OBV);
-    StgParams sparams(new Trade(_tf, _Symbol), new Indi_OBV(adx_params, adx_iparams, cparams), NULL, NULL);
+    OBV_Params obv_params(_params.OBV_Applied_Price);
+    IndicatorParams obv_iparams(10, INDI_OBV);
+    StgParams sparams(new Trade(_tf, _Symbol), new Indi_OBV(obv_params, obv_iparams, cparams), NULL, NULL);
     sparams.logger.SetLevel(_log_level);
     sparams.SetMagicNo(_magic_no);
     sparams.SetSignals(_params.OBV_SignalOpenMethod, _params.OBV_SignalOpenLevel, _params.OBV_SignalCloseMethod,
@@ -114,15 +113,13 @@ class Stg_OBV : public Strategy {
    *   _cmd (int) - type of trade order command
    *   period (int) - period to check for
    *   _method (int) - signal method to use by using bitwise AND operation
-   *   _level1 (double) - signal level to consider the signal
+   *   _level (double) - signal level to consider the signal
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
     bool _result = false;
     double obv_0 = ((Indi_OBV *)this.Data()).GetValue(0);
     double obv_1 = ((Indi_OBV *)this.Data()).GetValue(1);
     double obv_2 = ((Indi_OBV *)this.Data()).GetValue(2);
-    if (_level1 == EMPTY) _level1 = GetSignalLevel1();
-    if (_level2 == EMPTY) _level2 = GetSignalLevel2();
     switch (_cmd) {
       case ORDER_TYPE_BUY:
         break;

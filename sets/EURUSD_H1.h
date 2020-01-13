@@ -9,7 +9,6 @@ struct Stg_OBV_EURUSD_H1_Params : Stg_OBV_Params {
   Stg_OBV_EURUSD_H1_Params() {
     symbol = "EURUSD";
     tf = PERIOD_H1;
-    OBV_Period = 2;
     OBV_Applied_Price = 3;
     OBV_Shift = 0;
     OBV_SignalOpenMethod = 0;
