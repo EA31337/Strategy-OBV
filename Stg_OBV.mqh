@@ -15,31 +15,26 @@
 
 // User input params.
 INPUT string __OBV_Parameters__ = "-- OBV strategy params --";  // >>> OBV <<<
-INPUT int OBV_Active_Tf = 0;  // Activate timeframes (1-255, e.g. M1=1,M5=2,M15=4,M30=8,H1=16,H2=32...)
-INPUT ENUM_TRAIL_TYPE OBV_TrailingStopMethod = 22;             // Trail stop method
-INPUT ENUM_TRAIL_TYPE OBV_TrailingProfitMethod = 1;            // Trail profit method
-INPUT ENUM_APPLIED_PRICE OBV_Applied_Price = PRICE_CLOSE;      // Applied Price
-INPUT double OBV_SignalOpenLevel = 0.00000000;                 // Signal open level
-INPUT int OBV1_SignalBaseMethod = 0;                           // Signal base method (0-
-INPUT int OBV1_OpenCondition1 = 0;                             // Open condition 1 (0-1023)
-INPUT int OBV1_OpenCondition2 = 0;                             // Open condition 2 (0-)
-INPUT ENUM_MARKET_EVENT OBV1_CloseCondition = C_OBV_BUY_SELL;  // Close condition for M1
-INPUT double OBV_MaxSpread = 6.0;                              // Max spread to trade (pips)
+INPUT ENUM_APPLIED_PRICE OBV_Applied_Price = PRICE_CLOSE;       // Applied Price
+INPUT int OBV_SignalOpenMethod = 0;                             // Signal open method (0-
+INPUT double OBV_SignalOpenLevel = 0.00000000;                  // Signal open level
+INPUT int OBV_SignalCloseMethod = 0;                            // Signal close method (0-
+INPUT double OBV_SignalCloseLevel = 0.00000000;                 // Signal close level
+INPUT int OBV_PriceLimitMethod = 0;                             // Price limit method
+INPUT double OBV_PriceLimitLevel = 0;                           // Price limit level
+INPUT double OBV_MaxSpread = 6.0;                               // Max spread to trade (pips)
 
 // Struct to define strategy parameters to override.
 struct Stg_OBV_Params : Stg_Params {
   unsigned int OBV_Period;
   ENUM_APPLIED_PRICE OBV_Applied_Price;
   int OBV_Shift;
-  ENUM_TRAIL_TYPE OBV_TrailingStopMethod;
-  ENUM_TRAIL_TYPE OBV_TrailingProfitMethod;
+  int OBV_SignalOpenMethod;
   double OBV_SignalOpenLevel;
-  long OBV_SignalBaseMethod;
-  long OBV_SignalOpenMethod1;
-  long OBV_SignalOpenMethod2;
+  int OBV_SignalCloseMethod;
   double OBV_SignalCloseLevel;
-  ENUM_MARKET_EVENT OBV_SignalCloseMethod1;
-  ENUM_MARKET_EVENT OBV_SignalCloseMethod2;
+  int OBV_PriceLimitMethod;
+  double OBV_PriceLimitLevel;
   double OBV_MaxSpread;
 
   // Constructor: Set default param values.
@@ -47,15 +42,12 @@ struct Stg_OBV_Params : Stg_Params {
       : OBV_Period(::OBV_Period),
         OBV_Applied_Price(::OBV_Applied_Price),
         OBV_Shift(::OBV_Shift),
-        OBV_TrailingStopMethod(::OBV_TrailingStopMethod),
-        OBV_TrailingProfitMethod(::OBV_TrailingProfitMethod),
+        OBV_SignalOpenMethod(::OBV_SignalOpenMethod),
         OBV_SignalOpenLevel(::OBV_SignalOpenLevel),
-        OBV_SignalBaseMethod(::OBV_SignalBaseMethod),
-        OBV_SignalOpenMethod1(::OBV_SignalOpenMethod1),
-        OBV_SignalOpenMethod2(::OBV_SignalOpenMethod2),
+        OBV_SignalCloseMethod(::OBV_SignalCloseMethod),
         OBV_SignalCloseLevel(::OBV_SignalCloseLevel),
-        OBV_SignalCloseMethod1(::OBV_SignalCloseMethod1),
-        OBV_SignalCloseMethod2(::OBV_SignalCloseMethod2),
+        OBV_PriceLimitMethod(::OBV_PriceLimitMethod),
+        OBV_PriceLimitLevel(::OBV_PriceLimitLevel),
         OBV_MaxSpread(::OBV_MaxSpread) {}
 };
 
@@ -107,10 +99,8 @@ class Stg_OBV : public Strategy {
     StgParams sparams(new Trade(_tf, _Symbol), new Indi_OBV(adx_params, adx_iparams, cparams), NULL, NULL);
     sparams.logger.SetLevel(_log_level);
     sparams.SetMagicNo(_magic_no);
-    sparams.SetSignals(_params.OBV_SignalBaseMethod, _params.OBV_SignalOpenMethod1, _params.OBV_SignalOpenMethod2,
-                       _params.OBV_SignalCloseMethod1, _params.OBV_SignalCloseMethod2, _params.OBV_SignalOpenLevel,
+    sparams.SetSignals(_params.OBV_SignalOpenMethod, _params.OBV_SignalOpenLevel, _params.OBV_SignalCloseMethod,
                        _params.OBV_SignalCloseLevel);
-    sparams.SetStops(_params.OBV_TrailingProfitMethod, _params.OBV_TrailingStopMethod);
     sparams.SetMaxSpread(_params.OBV_MaxSpread);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_OBV(sparams, "OBV");
@@ -123,17 +113,16 @@ class Stg_OBV : public Strategy {
    * @param
    *   _cmd (int) - type of trade order command
    *   period (int) - period to check for
-   *   _signal_method (int) - signal method to use by using bitwise AND operation
-   *   _signal_level1 (double) - signal level to consider the signal
+   *   _method (int) - signal method to use by using bitwise AND operation
+   *   _level1 (double) - signal level to consider the signal
    */
-  bool SignalOpen(ENUM_ORDER_TYPE _cmd, long _signal_method = EMPTY, double _signal_level = EMPTY) {
+  bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
     bool _result = false;
     double obv_0 = ((Indi_OBV *)this.Data()).GetValue(0);
     double obv_1 = ((Indi_OBV *)this.Data()).GetValue(1);
     double obv_2 = ((Indi_OBV *)this.Data()).GetValue(2);
-    if (_signal_method == EMPTY) _signal_method = GetSignalBaseMethod();
-    if (_signal_level1 == EMPTY) _signal_level1 = GetSignalLevel1();
-    if (_signal_level2 == EMPTY) _signal_level2 = GetSignalLevel2();
+    if (_level1 == EMPTY) _level1 = GetSignalLevel1();
+    if (_level2 == EMPTY) _level2 = GetSignalLevel2();
     switch (_cmd) {
       case ORDER_TYPE_BUY:
         break;
@@ -146,8 +135,23 @@ class Stg_OBV : public Strategy {
   /**
    * Check strategy's closing signal.
    */
-  bool SignalClose(ENUM_ORDER_TYPE _cmd, long _signal_method = EMPTY, double _signal_level = EMPTY) {
-    if (_signal_level == EMPTY) _signal_level = GetSignalCloseLevel();
-    return SignalOpen(Order::NegateOrderType(_cmd), _signal_method, _signal_level);
+  bool SignalClose(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
+    return SignalOpen(Order::NegateOrderType(_cmd), _method, _level);
+  }
+
+  /**
+   * Gets price limit value for profit take or stop loss.
+   */
+  double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_STG_PRICE_LIMIT_MODE _mode, int _method = 0, double _level = 0.0) {
+    double _trail = _level * Market().GetPipSize();
+    int _direction = Order::OrderDirection(_cmd) * (_mode == LIMIT_VALUE_STOP ? -1 : 1);
+    double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
+    double _result = _default_value;
+    switch (_method) {
+      case 0: {
+        // @todo
+      }
+    }
+    return _result;
   }
 };

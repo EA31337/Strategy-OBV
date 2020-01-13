@@ -12,15 +12,12 @@ struct Stg_OBV_EURUSD_H4_Params : Stg_OBV_Params {
     OBV_Period = 2;
     OBV_Applied_Price = 3;
     OBV_Shift = 0;
-    OBV_TrailingStopMethod = 6;
-    OBV_TrailingProfitMethod = 11;
+    OBV_SignalOpenMethod = 0;
     OBV_SignalOpenLevel = 36;
-    OBV_SignalBaseMethod = 0;
-    OBV_SignalOpenMethod1 = 1;
-    OBV_SignalOpenMethod2 = 0;
+    OBV_SignalCloseMethod = 1;
     OBV_SignalCloseLevel = 36;
-    OBV_SignalCloseMethod1 = 1;
-    OBV_SignalCloseMethod2 = 0;
+    OBV_PriceLimitMethod = 0;
+    OBV_PriceLimitLevel = 0;
     OBV_MaxSpread = 10;
   }
 };
