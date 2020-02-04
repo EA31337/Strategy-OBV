@@ -19,6 +19,8 @@ INPUT ENUM_APPLIED_PRICE OBV_Applied_Price = PRICE_CLOSE;       // Applied Price
 INPUT int OBV_Shift = 0;                                        // Shift
 INPUT int OBV_SignalOpenMethod = 0;                             // Signal open method (0-
 INPUT double OBV_SignalOpenLevel = 0.00000000;                  // Signal open level
+INPUT int OBV_SignalOpenFilterMethod = 0.00000000;              // Signal open filter method
+INPUT int OBV_SignalOpenBoostMethod = 0.00000000;               // Signal open boost method
 INPUT int OBV_SignalCloseMethod = 0;                            // Signal close method (0-
 INPUT double OBV_SignalCloseLevel = 0.00000000;                 // Signal close level
 INPUT int OBV_PriceLimitMethod = 0;                             // Price limit method
@@ -31,6 +33,8 @@ struct Stg_OBV_Params : Stg_Params {
   int OBV_Shift;
   int OBV_SignalOpenMethod;
   double OBV_SignalOpenLevel;
+  int OBV_SignalOpenFilterMethod;
+  int OBV_SignalOpenBoostMethod;
   int OBV_SignalCloseMethod;
   double OBV_SignalCloseLevel;
   int OBV_PriceLimitMethod;
@@ -43,6 +47,8 @@ struct Stg_OBV_Params : Stg_Params {
         OBV_Shift(::OBV_Shift),
         OBV_SignalOpenMethod(::OBV_SignalOpenMethod),
         OBV_SignalOpenLevel(::OBV_SignalOpenLevel),
+        OBV_SignalOpenFilterMethod(::OBV_SignalOpenFilterMethod),
+        OBV_SignalOpenBoostMethod(::OBV_SignalOpenBoostMethod),
         OBV_SignalCloseMethod(::OBV_SignalCloseMethod),
         OBV_SignalCloseLevel(::OBV_SignalCloseLevel),
         OBV_PriceLimitMethod(::OBV_PriceLimitMethod),
@@ -99,6 +105,7 @@ class Stg_OBV : public Strategy {
     sparams.logger.SetLevel(_log_level);
     sparams.SetMagicNo(_magic_no);
     sparams.SetSignals(_params.OBV_SignalOpenMethod, _params.OBV_SignalOpenLevel, _params.OBV_SignalCloseMethod,
+                       _params.OBV_SignalOpenFilterMethod, _params.OBV_SignalOpenBoostMethod,
                        _params.OBV_SignalCloseLevel);
     sparams.SetMaxSpread(_params.OBV_MaxSpread);
     // Initialize strategy instance.
@@ -130,6 +137,38 @@ class Stg_OBV : public Strategy {
   }
 
   /**
+   * Check strategy's opening signal additional filter.
+   */
+  bool SignalOpenFilter(ENUM_ORDER_TYPE _cmd, int _method = 0) {
+    bool _result = true;
+    if (_method != 0) {
+      // if (METHOD(_method, 0)) _result &= Trade().IsTrend(_cmd);
+      // if (METHOD(_method, 1)) _result &= Trade().IsPivot(_cmd);
+      // if (METHOD(_method, 2)) _result &= Trade().IsPeakHours(_cmd);
+      // if (METHOD(_method, 3)) _result &= Trade().IsRoundNumber(_cmd);
+      // if (METHOD(_method, 4)) _result &= Trade().IsHedging(_cmd);
+      // if (METHOD(_method, 5)) _result &= Trade().IsPeakBar(_cmd);
+    }
+    return _result;
+  }
+
+  /**
+   * Gets strategy's lot size boost (when enabled).
+   */
+  double SignalOpenBoost(ENUM_ORDER_TYPE _cmd, int _method = 0) {
+    bool _result = 1.0;
+    if (_method != 0) {
+      // if (METHOD(_method, 0)) if (Trade().IsTrend(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 1)) if (Trade().IsPivot(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 2)) if (Trade().IsPeakHours(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 3)) if (Trade().IsRoundNumber(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 4)) if (Trade().IsHedging(_cmd)) _result *= 1.1;
+      // if (METHOD(_method, 5)) if (Trade().IsPeakBar(_cmd)) _result *= 1.1;
+    }
+    return _result;
+  }
+
+  /**
    * Check strategy's closing signal.
    */
   bool SignalClose(ENUM_ORDER_TYPE _cmd, int _method = 0, double _level = 0.0) {
@@ -139,9 +178,9 @@ class Stg_OBV : public Strategy {
   /**
    * Gets price limit value for profit take or stop loss.
    */
-  double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_STG_PRICE_LIMIT_MODE _mode, int _method = 0, double _level = 0.0) {
+  double PriceLimit(ENUM_ORDER_TYPE _cmd, ENUM_ORDER_TYPE_VALUE _mode, int _method = 0, double _level = 0.0) {
     double _trail = _level * Market().GetPipSize();
-    int _direction = Order::OrderDirection(_cmd) * (_mode == LIMIT_VALUE_STOP ? -1 : 1);
+    int _direction = Order::OrderDirection(_cmd) * (_mode == ORDER_TYPE_SL ? -1 : 1);
     double _default_value = Market().GetCloseOffer(_cmd) + _trail * _method * _direction;
     double _result = _default_value;
     switch (_method) {
