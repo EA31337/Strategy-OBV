@@ -84,6 +84,7 @@ class Stg_OBV : public Strategy {
     sparams.SetSignals(_params.OBV_SignalOpenMethod, _params.OBV_SignalOpenLevel, _params.OBV_SignalCloseMethod,
                        _params.OBV_SignalOpenFilterMethod, _params.OBV_SignalOpenBoostMethod,
                        _params.OBV_SignalCloseLevel);
+    sparams.SetPriceLimits(_params.OBV_PriceLimitMethod, _params.OBV_PriceLimitLevel);
     sparams.SetMaxSpread(_params.OBV_MaxSpread);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_OBV(sparams, "OBV");
