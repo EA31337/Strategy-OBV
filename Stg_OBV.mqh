@@ -79,7 +79,7 @@ class Stg_OBV : public Strategy {
     OBVParams obv_params(_params.OBV_Applied_Price);
     obv_params.SetTf(_tf);
     StgParams sparams(new Trade(_tf, _Symbol), new Indi_OBV(obv_params), NULL, NULL);
-    sparams.logger.SetLevel(_log_level);
+    sparams.logger.Ptr().SetLevel(_log_level);
     sparams.SetMagicNo(_magic_no);
     sparams.SetSignals(_params.OBV_SignalOpenMethod, _params.OBV_SignalOpenLevel, _params.OBV_SignalCloseMethod,
                        _params.OBV_SignalOpenFilterMethod, _params.OBV_SignalOpenBoostMethod,
