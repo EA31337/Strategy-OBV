@@ -7,14 +7,14 @@
 INPUT ENUM_APPLIED_PRICE OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
 INPUT int OBV_Shift = 0;                                   // Shift
 INPUT int OBV_SignalOpenMethod = 0;                        // Signal open method (0-
-INPUT float OBV_SignalOpenLevel = 0.00000000;             // Signal open level
+INPUT float OBV_SignalOpenLevel = 0.00000000;              // Signal open level
 INPUT int OBV_SignalOpenFilterMethod = 0.00000000;         // Signal open filter method
 INPUT int OBV_SignalOpenBoostMethod = 0.00000000;          // Signal open boost method
 INPUT int OBV_SignalCloseMethod = 0;                       // Signal close method (0-
-INPUT float OBV_SignalCloseLevel = 0.00000000;            // Signal close level
+INPUT float OBV_SignalCloseLevel = 0.00000000;             // Signal close level
 INPUT int OBV_PriceLimitMethod = 0;                        // Price limit method
-INPUT float OBV_PriceLimitLevel = 0;                      // Price limit level
-INPUT float OBV_MaxSpread = 6.0;                          // Max spread to trade (pips)
+INPUT float OBV_PriceLimitLevel = 0;                       // Price limit level
+INPUT float OBV_MaxSpread = 6.0;                           // Max spread to trade (pips)
 
 // Includes.
 #include <EA31337-classes/Indicators/Indi_OBV.mqh>
@@ -25,14 +25,14 @@ struct Stg_OBV_Params : StgParams {
   ENUM_APPLIED_PRICE OBV_Applied_Price;
   int OBV_Shift;
   int OBV_SignalOpenMethod;
-  double OBV_SignalOpenLevel;
+  float OBV_SignalOpenLevel;
   int OBV_SignalOpenFilterMethod;
   int OBV_SignalOpenBoostMethod;
   int OBV_SignalCloseMethod;
-  double OBV_SignalCloseLevel;
+  float OBV_SignalCloseLevel;
   int OBV_PriceLimitMethod;
-  double OBV_PriceLimitLevel;
-  double OBV_MaxSpread;
+  float OBV_PriceLimitLevel;
+  float OBV_MaxSpread;
 
   // Constructor: Set default param values.
   Stg_OBV_Params()
@@ -156,6 +156,6 @@ class Stg_OBV : public Strategy {
       }
       _result += _trail * _direction;
     }
-    return _result;
+    return (float)_result;
   }
 };
