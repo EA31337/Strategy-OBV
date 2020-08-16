@@ -3,55 +3,65 @@
  * Implements OBV strategy based on the On Balance Volume indicator.
  */
 
-// User input params.
-INPUT ENUM_APPLIED_PRICE OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
-INPUT int OBV_Shift = 0;                                   // Shift
-INPUT int OBV_SignalOpenMethod = 0;                        // Signal open method (0-
-INPUT float OBV_SignalOpenLevel = 0.00000000;              // Signal open level
-INPUT int OBV_SignalOpenFilterMethod = 0.00000000;         // Signal open filter method
-INPUT int OBV_SignalOpenBoostMethod = 0.00000000;          // Signal open boost method
-INPUT int OBV_SignalCloseMethod = 0;                       // Signal close method (0-
-INPUT float OBV_SignalCloseLevel = 0.00000000;             // Signal close level
-INPUT int OBV_PriceLimitMethod = 0;                        // Price limit method
-INPUT float OBV_PriceLimitLevel = 0;                       // Price limit level
-INPUT float OBV_MaxSpread = 6.0;                           // Max spread to trade (pips)
-
 // Includes.
 #include <EA31337-classes/Indicators/Indi_OBV.mqh>
 #include <EA31337-classes/Strategy.mqh>
 
+// User input params.
+INPUT float OBV_LotSize = 0;                        // Lot size
+INPUT int OBV_SignalOpenMethod = 0;                 // Signal open method (0-
+INPUT float OBV_SignalOpenLevel = 0.00000000;       // Signal open level
+INPUT int OBV_SignalOpenFilterMethod = 0.00000000;  // Signal open filter method
+INPUT int OBV_SignalOpenBoostMethod = 0.00000000;   // Signal open boost method
+INPUT int OBV_SignalCloseMethod = 0;                // Signal close method (0-
+INPUT float OBV_SignalCloseLevel = 0.00000000;      // Signal close level
+INPUT int OBV_PriceLimitMethod = 0;                 // Price limit method
+INPUT float OBV_PriceLimitLevel = 0;                // Price limit level
+INPUT int OBV_TickFilterMethod = 0;                 // Tick filter method
+INPUT float OBV_MaxSpread = 6.0;                    // Max spread to trade (pips)
+INPUT int OBV_Shift = 0;                            // Shift
+INPUT string __OBV_Indi_OBV_Parameters__ =
+    "-- OBV strategy: OBV indicator params --";                 // >>> OBV strategy: OBV indicator <<<
+INPUT ENUM_APPLIED_PRICE Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
+
+// Structs.
+
+// Defines struct with default user indicator values.
+struct Indi_OBV_Params_Defaults : OBVParams {
+  Indi_OBV_Params_Defaults() : OBVParams(::Indi_OBV_Applied_Price) {}
+} indi_obv_defaults;
+
+// Defines struct to store indicator parameter values.
+struct Indi_OBV_Params : public OBVParams {
+  // Struct constructors.
+  void Indi_OBV_Params(OBVParams &_params, ENUM_TIMEFRAMES _tf) : OBVParams(_params, _tf) {}
+};
+
+// Defines struct with default user strategy values.
+struct Stg_OBV_Params_Defaults : StgParams {
+  Stg_OBV_Params_Defaults()
+      : StgParams(::OBV_SignalOpenMethod, ::OBV_SignalOpenFilterMethod, ::OBV_SignalOpenLevel,
+                  ::OBV_SignalOpenBoostMethod, ::OBV_SignalCloseMethod, ::OBV_SignalCloseLevel, ::OBV_PriceLimitMethod,
+                  ::OBV_PriceLimitLevel, ::OBV_TickFilterMethod, ::OBV_MaxSpread, ::OBV_Shift) {}
+} stg_obv_defaults;
+
 // Struct to define strategy parameters to override.
 struct Stg_OBV_Params : StgParams {
-  ENUM_APPLIED_PRICE OBV_Applied_Price;
-  int OBV_Shift;
-  int OBV_SignalOpenMethod;
-  float OBV_SignalOpenLevel;
-  int OBV_SignalOpenFilterMethod;
-  int OBV_SignalOpenBoostMethod;
-  int OBV_SignalCloseMethod;
-  float OBV_SignalCloseLevel;
-  int OBV_PriceLimitMethod;
-  float OBV_PriceLimitLevel;
-  float OBV_MaxSpread;
+  Indi_OBV_Params iparams;
+  StgParams sparams;
 
-  // Constructor: Set default param values.
-  Stg_OBV_Params()
-      : OBV_Applied_Price(::OBV_Applied_Price),
-        OBV_Shift(::OBV_Shift),
-        OBV_SignalOpenMethod(::OBV_SignalOpenMethod),
-        OBV_SignalOpenLevel(::OBV_SignalOpenLevel),
-        OBV_SignalOpenFilterMethod(::OBV_SignalOpenFilterMethod),
-        OBV_SignalOpenBoostMethod(::OBV_SignalOpenBoostMethod),
-        OBV_SignalCloseMethod(::OBV_SignalCloseMethod),
-        OBV_SignalCloseLevel(::OBV_SignalCloseLevel),
-        OBV_PriceLimitMethod(::OBV_PriceLimitMethod),
-        OBV_PriceLimitLevel(::OBV_PriceLimitLevel),
-        OBV_MaxSpread(::OBV_MaxSpread) {}
+  // Struct constructors.
+  Stg_OBV_Params(Indi_OBV_Params &_iparams, StgParams &_sparams)
+      : iparams(indi_obv_defaults, _iparams.tf), sparams(stg_obv_defaults) {
+    iparams = _iparams;
+    sparams = _sparams;
+  }
 };
 
 // Loads pair specific param values.
 #include "sets/EURUSD_H1.h"
 #include "sets/EURUSD_H4.h"
+#include "sets/EURUSD_H8.h"
 #include "sets/EURUSD_M1.h"
 #include "sets/EURUSD_M15.h"
 #include "sets/EURUSD_M30.h"
@@ -63,24 +73,24 @@ class Stg_OBV : public Strategy {
 
   static Stg_OBV *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
-    Stg_OBV_Params _params;
+    Indi_OBV_Params _indi_params(indi_obv_defaults, _tf);
+    StgParams _stg_params(stg_obv_defaults);
     if (!Terminal::IsOptimization()) {
-      SetParamsByTf<Stg_OBV_Params>(_params, _tf, stg_obv_m1, stg_obv_m5, stg_obv_m15, stg_obv_m30, stg_obv_h1,
-                                    stg_obv_h4, stg_obv_h4);
+      SetParamsByTf<Indi_OBV_Params>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30,
+                                     indi_obv_h1, indi_obv_h4, indi_obv_h8);
+      SetParamsByTf<StgParams>(_stg_params, _tf, stg_obv_m1, stg_obv_m5, stg_obv_m15, stg_obv_m30, stg_obv_h1,
+                               stg_obv_h4, stg_obv_h8);
     }
+    // Initialize indicator.
+    OBVParams obv_params(_indi_params);
+    _stg_params.SetIndicator(new Indi_OBV(_indi_params));
     // Initialize strategy parameters.
-    OBVParams obv_params(_params.OBV_Applied_Price);
-    obv_params.SetTf(_tf);
-    StgParams sparams(new Trade(_tf, _Symbol), new Indi_OBV(obv_params), NULL, NULL);
-    sparams.logger.Ptr().SetLevel(_log_level);
-    sparams.SetMagicNo(_magic_no);
-    sparams.SetSignals(_params.OBV_SignalOpenMethod, _params.OBV_SignalOpenLevel, _params.OBV_SignalCloseMethod,
-                       _params.OBV_SignalOpenFilterMethod, _params.OBV_SignalOpenBoostMethod,
-                       _params.OBV_SignalCloseLevel);
-    sparams.SetPriceLimits(_params.OBV_PriceLimitMethod, _params.OBV_PriceLimitLevel);
-    sparams.SetMaxSpread(_params.OBV_MaxSpread);
+    _stg_params.GetLog().SetLevel(_log_level);
+    _stg_params.SetMagicNo(_magic_no);
+    _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
-    Strategy *_strat = new Stg_OBV(sparams, "OBV");
+    Strategy *_strat = new Stg_OBV(_stg_params, "OBV");
+    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 
@@ -142,15 +152,15 @@ class Stg_OBV : public Strategy {
     if (_is_valid) {
       switch (_method) {
         case 0: {
-          int _bar_count = (int)_level * 10;
-          _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count))
-                                   : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count));
+          int _bar_count0 = (int)_level * 10;
+          _result = _direction > 0 ? _indi.GetPrice(PRICE_HIGH, _indi.GetHighest(_bar_count0))
+                                   : _indi.GetPrice(PRICE_LOW, _indi.GetLowest(_bar_count0));
           break;
         }
         case 1: {
-          int _bar_count = (int)_level * 10;
-          _result = _direction > 0 ? _indi.GetPrice(_indi.GetAppliedPrice(), _indi.GetHighest(_bar_count))
-                                   : _indi.GetPrice(_indi.GetAppliedPrice(), _indi.GetLowest(_bar_count));
+          int _bar_count1 = (int)_level * 10;
+          _result = _direction > 0 ? _indi.GetPrice(_indi.GetAppliedPrice(), _indi.GetHighest(_bar_count1))
+                                   : _indi.GetPrice(_indi.GetAppliedPrice(), _indi.GetLowest(_bar_count1));
           break;
         }
       }

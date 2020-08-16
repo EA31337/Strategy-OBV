@@ -4,14 +4,14 @@
  */
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_OBV_Params_M15 : Indi_OBV_Params {
-  Indi_OBV_Params_M15() : Indi_OBV_Params(indi_obv_defaults, PERIOD_M15) { shift = 0; }
-} indi_obv_m15;
+struct Indi_OBV_Params_H8 : Indi_OBV_Params {
+  Indi_OBV_Params_H8() : Indi_OBV_Params(indi_obv_defaults, PERIOD_H8) { shift = 0; }
+} indi_obv_h8;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
-struct Stg_OBV_Params_M15 : StgParams {
+struct Stg_OBV_Params_H8 : StgParams {
   // Struct constructor.
-  Stg_OBV_Params_M15() : StgParams(stg_obv_defaults) {
+  Stg_OBV_Params_H8() : StgParams(stg_obv_defaults) {
     lot_size = 0;
     signal_open_method = 0;
     signal_open_filter = 1;
@@ -24,4 +24,4 @@ struct Stg_OBV_Params_M15 : StgParams {
     tick_filter_method = 1;
     max_spread = 0;
   }
-} stg_obv_m15;
+} stg_obv_h8;
