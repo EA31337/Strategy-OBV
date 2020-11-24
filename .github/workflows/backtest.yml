@@ -74,7 +74,7 @@ jobs:
           OptFormatBrief: true
           OptFormatJson: true
           OptVerbose: true
-          TestExpert: "Stg_Gator"
+          TestExpert: "Stg_OBV"
           TestPeriod: M1
           TestReportName: Report-${{ matrix.year }}-${{ matrix.month }}
       - name: Upload results
