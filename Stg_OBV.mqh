@@ -105,34 +105,22 @@ class Stg_OBV : public Strategy {
     if (_is_valid) {
       switch (_cmd) {
         case ORDER_TYPE_BUY:
-          _result = _indi[CURR].value[0] > _indi[PREV].value[0];
-          if (METHOD(_method, 0))
-            _result &= _indi[PREV].value[0] < _indi[PPREV].value[0];  // ... 2 consecutive columns are red.
-          if (METHOD(_method, 1))
-            _result &= _indi[PPREV].value[0] < _indi[3].value[0];  // ... 3 consecutive columns are red.
-          if (METHOD(_method, 2))
-            _result &= _indi[3].value[0] < _indi[4].value[0];  // ... 4 consecutive columns are red.
-          if (METHOD(_method, 3))
-            _result &= _indi[PREV].value[0] > _indi[PPREV].value[0];  // ... 2 consecutive columns are green.
-          if (METHOD(_method, 4))
-            _result &= _indi[PPREV].value[0] > _indi[3].value[0];  // ... 3 consecutive columns are green.
-          if (METHOD(_method, 5))
-            _result &= _indi[3].value[0] < _indi[4].value[0];  // ... 4 consecutive columns are green.
+          _result = _indi[CURR][0] > _indi[PREV][0];
+          if (METHOD(_method, 0)) _result &= _indi[PREV][0] < _indi[PPREV][0];  // ... 2 consecutive columns are red.
+          if (METHOD(_method, 1)) _result &= _indi[PPREV][0] < _indi[3][0];     // ... 3 consecutive columns are red.
+          if (METHOD(_method, 2)) _result &= _indi[3][0] < _indi[4][0];         // ... 4 consecutive columns are red.
+          if (METHOD(_method, 3)) _result &= _indi[PREV][0] > _indi[PPREV][0];  // ... 2 consecutive columns are green.
+          if (METHOD(_method, 4)) _result &= _indi[PPREV][0] > _indi[3][0];     // ... 3 consecutive columns are green.
+          if (METHOD(_method, 5)) _result &= _indi[3][0] < _indi[4][0];         // ... 4 consecutive columns are green.
           break;
         case ORDER_TYPE_SELL:
-          _result = _indi[CURR].value[0] < _indi[PREV].value[0];
-          if (METHOD(_method, 0))
-            _result &= _indi[PREV].value[0] < _indi[PPREV].value[0];  // ... 2 consecutive columns are red.
-          if (METHOD(_method, 1))
-            _result &= _indi[PPREV].value[0] < _indi[3].value[0];  // ... 3 consecutive columns are red.
-          if (METHOD(_method, 2))
-            _result &= _indi[3].value[0] < _indi[4].value[0];  // ... 4 consecutive columns are red.
-          if (METHOD(_method, 3))
-            _result &= _indi[PREV].value[0] > _indi[PPREV].value[0];  // ... 2 consecutive columns are green.
-          if (METHOD(_method, 4))
-            _result &= _indi[PPREV].value[0] > _indi[3].value[0];  // ... 3 consecutive columns are green.
-          if (METHOD(_method, 5))
-            _result &= _indi[3].value[0] < _indi[4].value[0];  // ... 4 consecutive columns are green.
+          _result = _indi[CURR][0] < _indi[PREV][0];
+          if (METHOD(_method, 0)) _result &= _indi[PREV][0] < _indi[PPREV][0];  // ... 2 consecutive columns are red.
+          if (METHOD(_method, 1)) _result &= _indi[PPREV][0] < _indi[3][0];     // ... 3 consecutive columns are red.
+          if (METHOD(_method, 2)) _result &= _indi[3][0] < _indi[4][0];         // ... 4 consecutive columns are red.
+          if (METHOD(_method, 3)) _result &= _indi[PREV][0] > _indi[PPREV][0];  // ... 2 consecutive columns are green.
+          if (METHOD(_method, 4)) _result &= _indi[PPREV][0] > _indi[3][0];     // ... 3 consecutive columns are green.
+          if (METHOD(_method, 5)) _result &= _indi[3][0] < _indi[4][0];         // ... 4 consecutive columns are green.
           break;
       }
     }
