@@ -3,10 +3,6 @@
  * Implements OBV strategy based on the On Balance Volume indicator.
  */
 
-// Includes.
-#include <EA31337-classes/Indicators/Indi_OBV.mqh>
-#include <EA31337-classes/Strategy.mqh>
-
 // User input params.
 INPUT float OBV_LotSize = 0;                        // Lot size
 INPUT int OBV_SignalOpenMethod = 0;                 // Signal open method (0-
