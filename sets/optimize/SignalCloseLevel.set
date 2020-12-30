@@ -1,0 +1,7 @@
+; Optimize signal close level param.
+OBV_SignalCloseLevel,1=10
+OBV_SignalCloseLevel,2=5
+OBV_SignalCloseLevel,3=40
+OBV_SignalCloseLevel,F=1
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod=1

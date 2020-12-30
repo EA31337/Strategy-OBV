@@ -1,0 +1,7 @@
+; Optimize signal open method param.
+OBV_SignalOpenFilterMethod=1
+OBV_SignalOpenMethod,1=-4
+OBV_SignalOpenMethod,2=1
+OBV_SignalOpenMethod,3=4
+OBV_SignalOpenMethod,F=1
+OBV_TickFilterMethod=1

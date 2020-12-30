@@ -1,0 +1,6 @@
+; Optimize tick filter method param.
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod,1=1
+OBV_TickFilterMethod,2=1
+OBV_TickFilterMethod,3=32
+OBV_TickFilterMethod,F=1

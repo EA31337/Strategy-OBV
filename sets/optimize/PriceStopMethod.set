@@ -1,0 +1,8 @@
+; Optimize price stop method param.
+OBV_PriceStopMethod,1=0
+OBV_PriceStopMethod,2=1
+OBV_PriceStopMethod,3=4
+OBV_PriceStopMethod,F=1
+OBV_OrderCloseTime=-20
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod=1

@@ -1,0 +1,7 @@
+; Optimize price stop level param.
+OBV_PriceStopLevel,1=10
+OBV_PriceStopLevel,2=5
+OBV_PriceStopLevel,3=40
+OBV_PriceStopLevel,F=1
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod=1

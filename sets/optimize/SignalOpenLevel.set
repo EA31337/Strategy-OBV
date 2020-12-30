@@ -1,0 +1,7 @@
+; Optimize signal open level param.
+OBV_SignalOpenFilterMethod=1
+OBV_SignalOpenLevel,1=0
+OBV_SignalOpenLevel,2=1
+OBV_SignalOpenLevel,3=10
+OBV_SignalOpenLevel,F=1
+OBV_TickFilterMethod=1

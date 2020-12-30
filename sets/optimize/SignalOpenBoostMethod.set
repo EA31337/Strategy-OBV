@@ -1,0 +1,7 @@
+; Optimize signal open boost method param.
+OBV_SignalOpenBoostMethod,1=1
+OBV_SignalOpenBoostMethod,2=1
+OBV_SignalOpenBoostMethod,3=8
+OBV_SignalOpenBoostMethod,F=1
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod=1

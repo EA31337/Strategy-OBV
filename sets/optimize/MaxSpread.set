@@ -1,0 +1,7 @@
+; Optimize max spread param.
+OBV_MaxSpread,1=10
+OBV_MaxSpread,2=10
+OBV_MaxSpread,3=40
+OBV_MaxSpread,F=1
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod=1

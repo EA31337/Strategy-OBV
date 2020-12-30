@@ -1,0 +1,7 @@
+; Optimize strategy shift param.
+OBV_Shift,1=0
+OBV_Shift,2=1
+OBV_Shift,3=1
+OBV_Shift,F=1
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod=1
