@@ -16,6 +16,7 @@ INPUT float OBV_PriceStopLevel = 0;                 // Price stop level
 INPUT int OBV_TickFilterMethod = 0;                 // Tick filter method
 INPUT float OBV_MaxSpread = 6.0;                    // Max spread to trade (pips)
 INPUT int OBV_Shift = 0;                            // Shift
+INPUT int OBV_OrderCloseTime = -10;                 // Order close time in mins (>0) or bars (<0)
 INPUT string __OBV_Indi_OBV_Parameters__ =
     "-- OBV strategy: OBV indicator params --";                 // >>> OBV strategy: OBV indicator <<<
 INPUT ENUM_APPLIED_PRICE Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
@@ -38,7 +39,7 @@ struct Stg_OBV_Params_Defaults : StgParams {
   Stg_OBV_Params_Defaults()
       : StgParams(::OBV_SignalOpenMethod, ::OBV_SignalOpenFilterMethod, ::OBV_SignalOpenLevel,
                   ::OBV_SignalOpenBoostMethod, ::OBV_SignalCloseMethod, ::OBV_SignalCloseLevel, ::OBV_PriceStopMethod,
-                  ::OBV_PriceStopLevel, ::OBV_TickFilterMethod, ::OBV_MaxSpread, ::OBV_Shift) {}
+                  ::OBV_PriceStopLevel, ::OBV_TickFilterMethod, ::OBV_MaxSpread, ::OBV_Shift, ::OBV_OrderCloseTime) {}
 } stg_obv_defaults;
 
 // Struct to define strategy parameters to override.
