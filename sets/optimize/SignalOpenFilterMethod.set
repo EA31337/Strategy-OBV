@@ -1,6 +1,6 @@
 ; Optimize signal open filter method param.
 OBV_SignalOpenFilterMethod,1=0
-OBV_SignalOpenFilterMethod,2=9
-OBV_SignalOpenFilterMethod,3=49
+OBV_SignalOpenFilterMethod,2=1
+OBV_SignalOpenFilterMethod,3=31
 OBV_SignalOpenFilterMethod,F=1
 OBV_TickFilterMethod=1
