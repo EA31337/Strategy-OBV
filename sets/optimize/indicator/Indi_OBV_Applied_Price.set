@@ -1,0 +1,7 @@
+; Optimize strategy indicator's OBV applied price param.
+OBV_Indi_OBV_Applied_Price,1=0
+OBV_Indi_OBV_Applied_Price,2=0
+OBV_Indi_OBV_Applied_Price,3=6
+OBV_Indi_OBV_Applied_Price,F=1
+OBV_SignalOpenFilterMethod=1
+OBV_TickFilterMethod=1
