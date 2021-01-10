@@ -4,8 +4,8 @@
  */
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_OBV_Params_M30 : Indi_OBV_Params {
-  Indi_OBV_Params_M30() : Indi_OBV_Params(indi_obv_defaults, PERIOD_M30) { shift = 0; }
+struct Indi_OBV_Params_M30 : OBVParams {
+  Indi_OBV_Params_M30() : OBVParams(indi_obv_defaults, PERIOD_M30) { shift = 0; }
 } indi_obv_m30;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.

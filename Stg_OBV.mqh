@@ -18,21 +18,16 @@ INPUT float OBV_MaxSpread = 4.0;                   // Max spread to trade (pips)
 INPUT int OBV_Shift = 0;                           // Shift
 INPUT int OBV_OrderCloseTime = -20;                // Order close time in mins (>0) or bars (<0)
 INPUT string __OBV_Indi_OBV_Parameters__ =
-    "-- OBV strategy: OBV indicator params --";                 // >>> OBV strategy: OBV indicator <<<
-INPUT ENUM_APPLIED_PRICE Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
+    "-- OBV strategy: OBV indicator params --";                     // >>> OBV strategy: OBV indicator <<<
+INPUT ENUM_APPLIED_PRICE OBV_Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
+INPUT int OBV_Indi_OBV_Shift = 0;                                   // Shift
 
 // Structs.
 
 // Defines struct with default user indicator values.
 struct Indi_OBV_Params_Defaults : OBVParams {
-  Indi_OBV_Params_Defaults() : OBVParams(::Indi_OBV_Applied_Price) {}
+  Indi_OBV_Params_Defaults() : OBVParams(::OBV_Indi_OBV_Applied_Price, ::OBV_Indi_OBV_Shift) {}
 } indi_obv_defaults;
-
-// Defines struct to store indicator parameter values.
-struct Indi_OBV_Params : public OBVParams {
-  // Struct constructors.
-  void Indi_OBV_Params(OBVParams &_params, ENUM_TIMEFRAMES _tf) : OBVParams(_params, _tf) {}
-};
 
 // Defines struct with default user strategy values.
 struct Stg_OBV_Params_Defaults : StgParams {
