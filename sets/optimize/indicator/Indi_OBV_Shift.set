@@ -1,4 +1,4 @@
-; Optimize strategy indicator's shift params.
+; Optimize indicator's shift param.
 OBV_Indi_OBV_Shift,1=0
 OBV_Indi_OBV_Shift,2=1
 OBV_Indi_OBV_Shift,3=4
