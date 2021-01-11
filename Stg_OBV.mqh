@@ -39,11 +39,11 @@ struct Stg_OBV_Params_Defaults : StgParams {
 
 // Struct to define strategy parameters to override.
 struct Stg_OBV_Params : StgParams {
-  Indi_OBV_Params iparams;
+  OBVParams iparams;
   StgParams sparams;
 
   // Struct constructors.
-  Stg_OBV_Params(Indi_OBV_Params &_iparams, StgParams &_sparams)
+  Stg_OBV_Params(OBVParams &_iparams, StgParams &_sparams)
       : iparams(indi_obv_defaults, _iparams.tf), sparams(stg_obv_defaults) {
     iparams = _iparams;
     sparams = _sparams;
@@ -65,11 +65,11 @@ class Stg_OBV : public Strategy {
 
   static Stg_OBV *Init(ENUM_TIMEFRAMES _tf = NULL, long _magic_no = NULL, ENUM_LOG_LEVEL _log_level = V_INFO) {
     // Initialize strategy initial values.
-    Indi_OBV_Params _indi_params(indi_obv_defaults, _tf);
+    OBVParams _indi_params(indi_obv_defaults, _tf);
     StgParams _stg_params(stg_obv_defaults);
     if (!Terminal::IsOptimization()) {
-      SetParamsByTf<Indi_OBV_Params>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30,
-                                     indi_obv_h1, indi_obv_h4, indi_obv_h8);
+      SetParamsByTf<OBVParams>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30, indi_obv_h1,
+                               indi_obv_h4, indi_obv_h8);
       SetParamsByTf<StgParams>(_stg_params, _tf, stg_obv_m1, stg_obv_m5, stg_obv_m15, stg_obv_m30, stg_obv_h1,
                                stg_obv_h4, stg_obv_h8);
     }
