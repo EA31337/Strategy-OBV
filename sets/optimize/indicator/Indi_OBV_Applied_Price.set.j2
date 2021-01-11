@@ -7,5 +7,5 @@ OBV_Indi_OBV_Shift={{ shift | default(0) }}
 OBV_LotSize={{ lot_size | default(0) }}
 OBV_PriceStopMethod=0
 OBV_SignalOpenFilterMethod=1
-OBV_SignalOpenLevel={{ signal_open_level | replace("(float)", "") | float | default(0) }}
+OBV_SignalOpenLevel={{ (signal_open_level | default(0) | replace("(float)", "") | float) }}
 OBV_TickFilterMethod=1
