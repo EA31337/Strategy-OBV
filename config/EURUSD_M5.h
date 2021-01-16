@@ -6,7 +6,7 @@
 // Defines indicator's parameter values for the given pair symbol and timeframe.
 struct Indi_OBV_Params_M5 : OBVParams {
   Indi_OBV_Params_M5() : OBVParams(indi_obv_defaults, PERIOD_M5) {
-    applied_price = (ENUM_APPLIED_PRICE)0;
+    applied_price = (ENUM_APPLIED_PRICE)5;
     shift = 0;
   }
 } indi_obv_m5;
