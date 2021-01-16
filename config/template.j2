@@ -5,8 +5,9 @@
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
 struct Indi_OBV_Params_{{ Timeframe }} : OBVParams {
+  Indi_OBV_Params_{{ Timeframe }}() : OBVParams(indi_obv_defaults, PERIOD_{{ Timeframe }}) {
     applied_price = (ENUM_APPLIED_PRICE){{ OBV_Indi_OBV_Applied_Price | default(0) }};
-    shift = {{ OBV_Shift | default(0) }};
+    shift = {{ OBV_Indi_OBV_Shift | default(0) }};
   }
 } indi_obv_{{ Timeframe | lower }};
 
