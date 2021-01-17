@@ -1,5 +1,5 @@
 OBV_Indi_OBV_Applied_Price={{ applied_price | replace("(ENUM_APPLIED_PRICE)", "") | int | default(0) }}
-OBV_Indi_OBV_Shift={{ shift | default(0) }}
+OBV_Indi_OBV_Shift={{ (shift | default(0) | int) }}
 OBV_LotSize={{ lot_size | default(0) }}
 OBV_PriceStopLevel={{ (price_stop_level | default(0) | replace("(float)", "") | float) }}
 OBV_PriceStopMethod={{ price_stop_method | default(0) }}
@@ -11,6 +11,6 @@ OBV_SignalOpenFilterMethod,2=1
 OBV_SignalOpenFilterMethod,3=8
 OBV_SignalOpenFilterMethod,F=1
 OBV_SignalOpenFilterMethod={{  signal_open_filter | default(1) }}
-OBV_SignalOpenLevel={{ (signal_open_level | default(0) | replace("(float)", "") | float) }}
+OBV_SignalOpenLevel={{ signal_open_level | default(0) | float }}
 OBV_SignalOpenMethod={{ signal_open_method | default(0) }}
 OBV_TickFilterMethod={{ tick_filter_method | default(1) }}
