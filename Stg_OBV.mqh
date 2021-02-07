@@ -4,19 +4,20 @@
  */
 
 // User input params.
-INPUT float OBV_LotSize = 0;                       // Lot size
-INPUT int OBV_SignalOpenMethod = 0;                // Signal open method (-1-1)
-INPUT float OBV_SignalOpenLevel = 0.0f;            // Signal open level
-INPUT int OBV_SignalOpenFilterMethod = 1;          // Signal open filter method
-INPUT int OBV_SignalOpenBoostMethod = 0.00000000;  // Signal open boost method
-INPUT int OBV_SignalCloseMethod = 0;               // Signal close method (-1-1)
-INPUT float OBV_SignalCloseLevel = 0.0f;           // Signal close level
-INPUT int OBV_PriceStopMethod = 0;                 // Price stop method
-INPUT float OBV_PriceStopLevel = 0;                // Price stop level
-INPUT int OBV_TickFilterMethod = 1;                // Tick filter method
-INPUT float OBV_MaxSpread = 4.0;                   // Max spread to trade (pips)
-INPUT int OBV_Shift = 0;                           // Shift
-INPUT int OBV_OrderCloseTime = -20;                // Order close time in mins (>0) or bars (<0)
+INPUT string __OBV_Parameters__ = "-- OBV strategy params --";  // >>> OBV <<<
+INPUT float OBV_LotSize = 0;                                    // Lot size
+INPUT int OBV_SignalOpenMethod = 0;                             // Signal open method (-1-1)
+INPUT float OBV_SignalOpenLevel = 0.0f;                         // Signal open level
+INPUT int OBV_SignalOpenFilterMethod = 1;                       // Signal open filter method
+INPUT int OBV_SignalOpenBoostMethod = 0;                        // Signal open boost method
+INPUT int OBV_SignalCloseMethod = 0;                            // Signal close method (-1-1)
+INPUT float OBV_SignalCloseLevel = 0.0f;                        // Signal close level
+INPUT int OBV_PriceStopMethod = 0;                              // Price stop method
+INPUT float OBV_PriceStopLevel = 0;                             // Price stop level
+INPUT int OBV_TickFilterMethod = 1;                             // Tick filter method
+INPUT float OBV_MaxSpread = 4.0;                                // Max spread to trade (pips)
+INPUT int OBV_Shift = 0;                                        // Shift
+INPUT int OBV_OrderCloseTime = -20;                             // Order close time in mins (>0) or bars (<0)
 INPUT string __OBV_Indi_OBV_Parameters__ =
     "-- OBV strategy: OBV indicator params --";                     // >>> OBV strategy: OBV indicator <<<
 INPUT ENUM_APPLIED_PRICE OBV_Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
@@ -67,12 +68,12 @@ class Stg_OBV : public Strategy {
     // Initialize strategy initial values.
     OBVParams _indi_params(indi_obv_defaults, _tf);
     StgParams _stg_params(stg_obv_defaults);
-    if (!Terminal::IsOptimization()) {
-      SetParamsByTf<OBVParams>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30, indi_obv_h1,
-                               indi_obv_h4, indi_obv_h8);
-      SetParamsByTf<StgParams>(_stg_params, _tf, stg_obv_m1, stg_obv_m5, stg_obv_m15, stg_obv_m30, stg_obv_h1,
-                               stg_obv_h4, stg_obv_h8);
-    }
+#ifdef __config__
+    SetParamsByTf<OBVParams>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30, indi_obv_h1,
+                             indi_obv_h4, indi_obv_h8);
+    SetParamsByTf<StgParams>(_stg_params, _tf, stg_obv_m1, stg_obv_m5, stg_obv_m15, stg_obv_m30, stg_obv_h1, stg_obv_h4,
+                             stg_obv_h8);
+#endif
     // Initialize indicator.
     OBVParams obv_params(_indi_params);
     _stg_params.SetIndicator(new Indi_OBV(_indi_params));
@@ -82,7 +83,6 @@ class Stg_OBV : public Strategy {
     _stg_params.SetTf(_tf, _Symbol);
     // Initialize strategy instance.
     Strategy *_strat = new Stg_OBV(_stg_params, "OBV");
-    _stg_params.SetStops(_strat, _strat);
     return _strat;
   }
 
