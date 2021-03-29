@@ -16,7 +16,7 @@ INPUT int OBV_PriceStopMethod = 0;                              // Price stop me
 INPUT float OBV_PriceStopLevel = 0;                             // Price stop level
 INPUT int OBV_TickFilterMethod = 1;                             // Tick filter method
 INPUT float OBV_MaxSpread = 4.0;                                // Max spread to trade (pips)
-INPUT int OBV_Shift = 0;                                        // Shift
+INPUT short OBV_Shift = 0;                                      // Shift
 INPUT int OBV_OrderCloseTime = -20;                             // Order close time in mins (>0) or bars (<0)
 INPUT string __OBV_Indi_OBV_Parameters__ =
     "-- OBV strategy: OBV indicator params --";                     // >>> OBV strategy: OBV indicator <<<
