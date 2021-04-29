@@ -45,7 +45,7 @@ struct Stg_OBV_Params : StgParams {
 
   // Struct constructors.
   Stg_OBV_Params(OBVParams &_iparams, StgParams &_sparams)
-      : iparams(indi_obv_defaults, _iparams.tf), sparams(stg_obv_defaults) {
+      : iparams(indi_obv_defaults, _iparams.tf.GetTf()), sparams(stg_obv_defaults) {
     iparams = _iparams;
     sparams = _sparams;
   }
