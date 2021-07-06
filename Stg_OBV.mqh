@@ -8,7 +8,7 @@ INPUT string __OBV_Parameters__ = "-- OBV strategy params --";  // >>> OBV <<<
 INPUT float OBV_LotSize = 0;                                    // Lot size
 INPUT int OBV_SignalOpenMethod = 2;                             // Signal open method (-127-127)
 INPUT float OBV_SignalOpenLevel = 0.0f;                         // Signal open level
-INPUT int OBV_SignalOpenFilterMethod = 32;                       // Signal open filter method
+INPUT int OBV_SignalOpenFilterMethod = 32;                      // Signal open filter method
 INPUT int OBV_SignalOpenBoostMethod = 0;                        // Signal open boost method
 INPUT int OBV_SignalCloseMethod = 2;                            // Signal close method (-127-127)
 INPUT float OBV_SignalCloseLevel = 0.0f;                        // Signal close level
@@ -93,20 +93,17 @@ class Stg_OBV : public Strategy {
     bool _is_valid = _indi[_shift].IsValid() && _indi[_shift + 1].IsValid() && _indi[_shift + 2].IsValid();
     bool _result = _is_valid;
     if (_is_valid) {
+      IndicatorSignal _signals = _indi.GetSignals(4, _shift);
       switch (_cmd) {
         case ORDER_TYPE_BUY:
-          _result &= _indi.IsIncreasing(3, 0, _shift);
-          _result &= _indi.IsIncByPct(_level, 0, _shift + 3, 3);
-          if (_result && _method != 0) {
-            if (METHOD(_method, 0)) _result &= _indi.IsIncreasing(2, 0, _shift + 3);
-          }
+          _result &= _indi.IsIncreasing(2, 0, _shift);
+          _result &= _indi.IsIncByPct(_level, 0, _shift, 2);
+          _result &= _method > 0 ? _signals.CheckSignals(_method) : _signals.CheckSignalsAll(-_method);
           break;
         case ORDER_TYPE_SELL:
-          _result &= _indi.IsDecreasing(3, 0, _shift);
-          _result &= _indi.IsDecByPct(-_level, 0, _shift + 3, 3);
-          if (_result && _method != 0) {
-            if (METHOD(_method, 0)) _result &= _indi.IsDecreasing(2, 0, _shift + 3);
-          }
+          _result &= _indi.IsDecreasing(2, 0, _shift);
+          _result &= _indi.IsDecByPct(-_level, 0, _shift, 2);
+          _result &= _method > 0 ? _signals.CheckSignals(_method) : _signals.CheckSignalsAll(-_method);
           break;
       }
     }
