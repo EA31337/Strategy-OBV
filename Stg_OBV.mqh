@@ -11,6 +11,7 @@ INPUT float OBV_SignalOpenLevel = 0.0f;     // Signal open level
 INPUT int OBV_SignalOpenFilterMethod = 32;  // Signal open filter method
 INPUT int OBV_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int OBV_SignalCloseMethod = 2;        // Signal close method (-127-127)
+INPUT int OBV_SignalCloseFilter = 0;        // Signal close filter (-127-127)
 INPUT float OBV_SignalCloseLevel = 0.0f;    // Signal close level
 INPUT int OBV_PriceStopMethod = 1;          // Price stop method
 INPUT float OBV_PriceStopLevel = 0;         // Price stop level
@@ -33,8 +34,9 @@ struct Indi_OBV_Params_Defaults : OBVParams {
 struct Stg_OBV_Params_Defaults : StgParams {
   Stg_OBV_Params_Defaults()
       : StgParams(::OBV_SignalOpenMethod, ::OBV_SignalOpenFilterMethod, ::OBV_SignalOpenLevel,
-                  ::OBV_SignalOpenBoostMethod, ::OBV_SignalCloseMethod, ::OBV_SignalCloseLevel, ::OBV_PriceStopMethod,
-                  ::OBV_PriceStopLevel, ::OBV_TickFilterMethod, ::OBV_MaxSpread, ::OBV_Shift, ::OBV_OrderCloseTime) {}
+                  ::OBV_SignalOpenBoostMethod, ::OBV_SignalCloseMethod, ::OBV_SignalCloseFilter, ::OBV_SignalCloseLevel,
+                  ::OBV_PriceStopMethod, ::OBV_PriceStopLevel, ::OBV_TickFilterMethod, ::OBV_MaxSpread, ::OBV_Shift,
+                  ::OBV_OrderCloseTime) {}
 } stg_obv_defaults;
 
 // Struct to define strategy parameters to override.
