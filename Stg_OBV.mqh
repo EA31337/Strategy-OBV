@@ -9,6 +9,7 @@ INPUT float OBV_LotSize = 0;                // Lot size
 INPUT int OBV_SignalOpenMethod = 2;         // Signal open method (-127-127)
 INPUT float OBV_SignalOpenLevel = 0.0f;     // Signal open level
 INPUT int OBV_SignalOpenFilterMethod = 32;  // Signal open filter method
+INPUT int OBV_SignalOpenFilterTime = 6;     // Signal open filter time
 INPUT int OBV_SignalOpenBoostMethod = 0;    // Signal open boost method
 INPUT int OBV_SignalCloseMethod = 2;        // Signal close method (-127-127)
 INPUT int OBV_SignalCloseFilter = 0;        // Signal close filter (-127-127)
@@ -41,6 +42,7 @@ struct Stg_OBV_Params_Defaults : StgParams {
     Set(STRAT_PARAM_OCL, OBV_OrderCloseLoss);
     Set(STRAT_PARAM_OCP, OBV_OrderCloseProfit);
     Set(STRAT_PARAM_OCT, OBV_OrderCloseTime);
+    Set(STRAT_PARAM_SOFT, OBV_SignalOpenFilterTime);
   }
 } stg_obv_defaults;
 
