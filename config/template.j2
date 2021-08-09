@@ -17,7 +17,7 @@ struct Stg_OBV_Params_{{ Timeframe }} : StgParams {
   Stg_OBV_Params_{{ Timeframe }}() : StgParams(stg_obv_defaults) {
     lot_size = {{ OBV_LotSize | default(0) }};
     signal_open_method = {{ OBV_SignalOpenMethod | default(0) }};
-    signal_open_filter = {{ OBV_SignalOpenFilterMethod | default(1) }};
+    signal_open_filter_method = {{ OBV_SignalOpenFilterMethod | default(1) }};
     signal_open_level = (float){{ OBV_SignalOpenLevel | default(0) }};
     signal_open_boost = {{ OBV_SignalOpenBoostMethod | default(0) }};
     signal_close_method = {{ OBV_SignalCloseMethod | default(0) }};
