@@ -21,7 +21,7 @@ INPUT float OBV_MaxSpread = 4.0;            // Max spread to trade (pips)
 INPUT short OBV_Shift = 0;                  // Shift
 INPUT float OBV_OrderCloseLoss = 0;         // Order close loss
 INPUT float OBV_OrderCloseProfit = 0;       // Order close profit
-INPUT int OBV_OrderCloseTime = -20;         // Order close time in mins (>0) or bars (<0)
+INPUT int OBV_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("OBV strategy: OBV indicator params");
 INPUT ENUM_APPLIED_PRICE OBV_Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
 INPUT int OBV_Indi_OBV_Shift = 0;                                   // Shift
