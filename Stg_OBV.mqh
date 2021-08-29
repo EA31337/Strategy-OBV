@@ -39,6 +39,7 @@ struct Stg_OBV_Params_Defaults : StgParams {
       : StgParams(::OBV_SignalOpenMethod, ::OBV_SignalOpenFilterMethod, ::OBV_SignalOpenLevel,
                   ::OBV_SignalOpenBoostMethod, ::OBV_SignalCloseMethod, ::OBV_SignalCloseFilter, ::OBV_SignalCloseLevel,
                   ::OBV_PriceStopMethod, ::OBV_PriceStopLevel, ::OBV_TickFilterMethod, ::OBV_MaxSpread, ::OBV_Shift) {
+    Set(STRAT_PARAM_LS, OBV_LotSize);
     Set(STRAT_PARAM_OCL, OBV_OrderCloseLoss);
     Set(STRAT_PARAM_OCP, OBV_OrderCloseProfit);
     Set(STRAT_PARAM_OCT, OBV_OrderCloseTime);
