@@ -47,19 +47,6 @@ struct Stg_OBV_Params_Defaults : StgParams {
   }
 } stg_obv_defaults;
 
-// Struct to define strategy parameters to override.
-struct Stg_OBV_Params : StgParams {
-  OBVParams iparams;
-  StgParams sparams;
-
-  // Struct constructors.
-  Stg_OBV_Params(OBVParams &_iparams, StgParams &_sparams)
-      : iparams(indi_obv_defaults, _iparams.tf.GetTf()), sparams(stg_obv_defaults) {
-    iparams = _iparams;
-    sparams = _sparams;
-  }
-};
-
 #ifdef __config__
 // Loads pair specific param values.
 #include "config/H1.h"
