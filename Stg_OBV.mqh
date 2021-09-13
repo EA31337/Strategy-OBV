@@ -76,7 +76,6 @@ class Stg_OBV : public Strategy {
                              stg_obv_h8);
 #endif
     // Initialize indicator.
-    OBVParams obv_params(_indi_params);
     _stg_params.SetIndicator(new Indi_OBV(_indi_params));
     // Initialize Strategy instance.
     ChartParams _cparams(_tf, _Symbol);
