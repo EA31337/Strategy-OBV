@@ -31,7 +31,7 @@ INPUT int OBV_Indi_OBV_Shift = 0;                                   // Shift
 // Defines struct with default user indicator values.
 struct Indi_OBV_Params_Defaults : OBVParams {
   Indi_OBV_Params_Defaults() : OBVParams(::OBV_Indi_OBV_Applied_Price, ::OBV_Indi_OBV_Shift) {}
-} indi_obv_defaults;
+};
 
 // Defines struct with default user strategy values.
 struct Stg_OBV_Params_Defaults : StgParams {
@@ -45,7 +45,7 @@ struct Stg_OBV_Params_Defaults : StgParams {
     Set(STRAT_PARAM_OCT, OBV_OrderCloseTime);
     Set(STRAT_PARAM_SOFT, OBV_SignalOpenFilterTime);
   }
-} stg_obv_defaults;
+};
 
 #ifdef __config__
 // Loads pair specific param values.
@@ -65,7 +65,9 @@ class Stg_OBV : public Strategy {
 
   static Stg_OBV *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
+    Indi_OBV_Params_Defaults indi_obv_defaults;
     OBVParams _indi_params(indi_obv_defaults, _tf);
+    Stg_OBV_Params_Defaults stg_obv_defaults;
     StgParams _stg_params(stg_obv_defaults);
 #ifdef __config__
     SetParamsByTf<OBVParams>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30, indi_obv_h1,
