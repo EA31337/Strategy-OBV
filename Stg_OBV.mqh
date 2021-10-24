@@ -29,8 +29,8 @@ INPUT int OBV_Indi_OBV_Shift = 0;                                   // Shift
 // Structs.
 
 // Defines struct with default user indicator values.
-struct Indi_OBV_Params_Defaults : OBVParams {
-  Indi_OBV_Params_Defaults() : OBVParams(::OBV_Indi_OBV_Applied_Price, ::OBV_Indi_OBV_Shift) {}
+struct Indi_OBV_Params_Defaults : IndiOBVParams {
+  Indi_OBV_Params_Defaults() : IndiOBVParams(::OBV_Indi_OBV_Applied_Price, ::OBV_Indi_OBV_Shift) {}
 };
 
 // Defines struct with default user strategy values.
@@ -66,12 +66,12 @@ class Stg_OBV : public Strategy {
   static Stg_OBV *Init(ENUM_TIMEFRAMES _tf = NULL) {
     // Initialize strategy initial values.
     Indi_OBV_Params_Defaults indi_obv_defaults;
-    OBVParams _indi_params(indi_obv_defaults, _tf);
+    IndiOBVParams _indi_params(indi_obv_defaults, _tf);
     Stg_OBV_Params_Defaults stg_obv_defaults;
     StgParams _stg_params(stg_obv_defaults);
 #ifdef __config__
-    SetParamsByTf<OBVParams>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30, indi_obv_h1,
-                             indi_obv_h4, indi_obv_h8);
+    SetParamsByTf<IndiOBVParams>(_indi_params, _tf, indi_obv_m1, indi_obv_m5, indi_obv_m15, indi_obv_m30, indi_obv_h1,
+                                 indi_obv_h4, indi_obv_h8);
     SetParamsByTf<StgParams>(_stg_params, _tf, stg_obv_m1, stg_obv_m5, stg_obv_m15, stg_obv_m30, stg_obv_h1, stg_obv_h4,
                              stg_obv_h8);
 #endif

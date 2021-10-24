@@ -4,8 +4,8 @@
  */
 
 // Defines indicator's parameter values for the given pair symbol and timeframe.
-struct Indi_OBV_Params_H8 : OBVParams {
-  Indi_OBV_Params_H8() : OBVParams(indi_obv_defaults, PERIOD_H8) { shift = 0; }
+struct Indi_OBV_Params_H8 : IndiOBVParams {
+  Indi_OBV_Params_H8() : IndiOBVParams(indi_obv_defaults, PERIOD_H8) { shift = 0; }
 } indi_obv_h8;
 
 // Defines strategy's parameter values for the given pair symbol and timeframe.
