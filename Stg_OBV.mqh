@@ -27,12 +27,6 @@ INPUT ENUM_APPLIED_PRICE OBV_Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied P
 INPUT int OBV_Indi_OBV_Shift = 0;                                   // Shift
 
 // Structs.
-
-// Defines struct with default user indicator values.
-struct Indi_OBV_Params_Defaults : IndiOBVParams {
-  Indi_OBV_Params_Defaults() : IndiOBVParams(::OBV_Indi_OBV_Applied_Price, ::OBV_Indi_OBV_Shift) {}
-};
-
 // Defines struct with default user strategy values.
 struct Stg_OBV_Params_Defaults : StgParams {
   Stg_OBV_Params_Defaults()
@@ -83,8 +77,8 @@ class Stg_OBV : public Strategy {
    * Event on strategy's init.
    */
   void OnInit() {
-    Indi_OBV_Params_Defaults indi_obv_defaults;
-    IndiOBVParams _indi_params(indi_obv_defaults, Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
+    IndiOBVParams _indi_params(::OBV_Indi_OBV_Applied_Price, ::OBV_Indi_OBV_Shift);
+    _indi_params.SetTf(Get<ENUM_TIMEFRAMES>(STRAT_PARAM_TF));
     SetIndicator(new Indi_OBV(_indi_params));
   }
 
