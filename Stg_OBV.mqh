@@ -24,7 +24,7 @@ INPUT float OBV_OrderCloseProfit = 80;      // Order close profit
 INPUT int OBV_OrderCloseTime = -30;         // Order close time in mins (>0) or bars (<0)
 INPUT_GROUP("OBV strategy: OBV indicator params");
 INPUT ENUM_APPLIED_PRICE OBV_Indi_OBV_Applied_Price = PRICE_CLOSE;  // Applied Price
-INPUT int OBV_Indi_OBV_Shift = 0;                                   // Shift
+INPUT int OBV_Indi_OBV_Shift = 1;                                   // Shift
 
 // Structs.
 // Defines struct with default user strategy values.
@@ -87,21 +87,22 @@ class Stg_OBV : public Strategy {
    */
   bool SignalOpen(ENUM_ORDER_TYPE _cmd, int _method = 0, float _level = 0.0f, int _shift = 0) {
     Indi_OBV *_indi = GetIndicator();
-    bool _result = _indi.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _shift);
+    int _ishift = ::OBV_Indi_OBV_Shift;
+    bool _result = _indi.GetFlag(INDI_ENTRY_FLAG_IS_VALID, _ishift);
     if (!_result) {
       // Returns false when indicator data is not valid.
       return false;
     }
-    IndicatorSignal _signals = _indi.GetSignals(4, _shift);
+    IndicatorSignal _signals = _indi.GetSignals(4, _ishift);
     switch (_cmd) {
       case ORDER_TYPE_BUY:
-        _result &= _indi.IsIncreasing(2, 0, _shift);
-        _result &= _indi.IsIncByPct(_level, 0, _shift, 2);
+        _result &= _indi.IsIncreasing(2, 0, _ishift);
+        _result &= _indi.IsIncByPct(_level, 0, _ishift, 2);
         _result &= _method > 0 ? _signals.CheckSignals(_method) : _signals.CheckSignalsAll(-_method);
         break;
       case ORDER_TYPE_SELL:
-        _result &= _indi.IsDecreasing(2, 0, _shift);
-        _result &= _indi.IsDecByPct(-_level, 0, _shift, 2);
+        _result &= _indi.IsDecreasing(2, 0, _ishift);
+        _result &= _indi.IsDecByPct(-_level, 0, _ishift, 2);
         _result &= _method > 0 ? _signals.CheckSignals(_method) : _signals.CheckSignalsAll(-_method);
         break;
     }
