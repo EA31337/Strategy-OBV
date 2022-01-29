@@ -23,7 +23,7 @@ input bool Info_On_Chart = true;          // Display info on chart.
 
 // Defines.
 #define ea_name "Strategy OBV"
-#define ea_version "1.009"
+#define ea_version "1.010"
 #define ea_desc "Strategy based on EA31337 framework."
 #define ea_link "https://github.com/EA31337/Strategy-OBV"
 #define ea_author "EA31337 Ltd"
@@ -35,7 +35,7 @@ input bool Info_On_Chart = true;          // Display info on chart.
 #property description ea_desc
 #endif
 #property link ea_link
-#property copyright "Copyright 2016-2021, EA31337 Ltd"
+#property copyright "Copyright 2016-2022, EA31337 Ltd"
 
 // Class variables.
 EA *ea;
